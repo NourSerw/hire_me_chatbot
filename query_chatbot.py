@@ -1,35 +1,42 @@
+from langdetect import detect
 from langchain_chroma import Chroma
 from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_ollama import OllamaLLM
 from langchain_classic.chains.retrieval_qa.base import RetrievalQA
 
-# Initialize HuggingFace embeddings
-embeddings = HuggingFaceEmbeddings(
-    model_name="sentence-transformers/all-MiniLM-L6-v2",
-    model_kwargs={'device': 'cpu'}
-)
+from utils import HireMeChatbotUtils
 
-# Load existing ChromaDB
-vectordb = Chroma(
-    persist_directory="./vector_db",  
-    embedding_function=embeddings
-)
+class QueryChatbot:
+    def __init__(self):
+        self.embeddings = HireMeChatbotUtils().load_embeddings()
+        self.vectordb = Chroma(
+            persist_directory="./vector_db",  
+            embedding_function=self.embeddings
+        )
+        self.llm = OllamaLLM(model="mistral:7b-instruct")
+    
+    def detect_language(self, query):
+        language = detect(query)
+        return language
 
-llm = OllamaLLM(model="llama2")  # or "mistral", "phi", etc.
-qa_chain = RetrievalQA.from_chain_type(
-    llm=llm,
-    chain_type="stuff",
-    retriever=vectordb.as_retriever(search_kwargs={"k": 7})
-)
+    def qa_chain(self):
+        qa_chain = RetrievalQA.from_chain_type(
+            llm=self.llm,
+            chain_type="stuff",
+            retriever=self.vectordb.as_retriever(search_kwargs={"k": 10})
+        )
+        return qa_chain
+    
+    def get_response(self, query):
+        language = self.detect_language(query)
+        print(f"✓ Detected language: {language}")
+        qa_chain = self.qa_chain()
+        response = qa_chain.invoke(query)
+        return response
 
-# Simple similarity search
-query = "Who is Nour?"
-results = vectordb.similarity_search(query, k=7)
-#print(f"Top {len(results)} results for query: '{query}'")
-response = qa_chain.invoke(query)
-print(response)
-
-# for doc in results:
-#     print(doc.page_content)
-#     print("---")
+if __name__ == "__main__":
+    chatbot = QueryChatbot()
+    sample_query = "What programming languages is Nour proficient in?"
+    response = chatbot.get_response(sample_query)
+    print(f"✓ Response: {response}")
 

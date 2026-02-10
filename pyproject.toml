@@ -14,4 +14,9 @@ dependencies = [
     "langchain-ollama>=1.0.1",
     "langchain-chroma>=1.1.0",
     "langchain-huggingface>=1.2.0",
+    "langdetect>=1.0.9",
+    "streamlit>=1.54.0",
+    "pandas>=2.3.3",
+    "unstructured[md,pdf]>=0.18.31",
+    "libmagic>=1.0",
 ]
