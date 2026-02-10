@@ -1,0 +1,59 @@
+"""
+Simple: Add New PDFs to Existing ChromaDB
+"""
+
+from langchain_community.document_loaders import DirectoryLoader, PyPDFLoader
+from langchain_text_splitters import RecursiveCharacterTextSplitter
+from langchain_community.embeddings import HuggingFaceEmbeddings
+from langchain_community.vectorstores import Chroma
+
+class PopulateDatabase:
+    def __init__(self):
+        pass
+
+    def load_documents(self):
+        print("Loading new PDFs from 'docs/' folder...")
+        loader = DirectoryLoader("docs/", glob="**/*.pdf", loader_cls=PyPDFLoader)
+        documents = loader.load()
+        print(f"✓ Loaded {len(documents)} pages")
+        return documents
+    
+    def chunk_documents(self, documents):
+        print("Chunking...")
+        splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200)
+        chunks = splitter.split_documents(documents)
+        print(f"✓ Created {len(chunks)} chunks")
+        return chunks
+    
+    def load_embeddings(self):
+        print("Loading embedding model...")
+        embeddings = HuggingFaceEmbeddings(
+            model_name="sentence-transformers/all-MiniLM-L6-v2",
+            model_kwargs={'device': 'cpu'}
+        )
+        return embeddings
+    
+    def load_database(self, embeddings):
+        print("Loading existing database...")
+        vectordb = Chroma(
+            persist_directory="./vector_db",
+            embedding_function=embeddings
+        )
+        return vectordb
+    
+    def add_new_chunks(self, vectordb, chunks):
+        print("Adding new PDFs to database...")
+        # Generate custom IDs for each chunk
+        ids = [f"chunk_{i}" for i in range(len(chunks))]
+        vectordb.add_documents(chunks, ids=ids)
+        return ids
+
+if __name__ == "__main__":
+    populator = PopulateDatabase()
+    documents = populator.load_documents()
+    chunks = populator.chunk_documents(documents)
+    embeddings = populator.load_embeddings()
+    vectordb = populator.load_database(embeddings)
+    ids = populator.add_new_chunks(vectordb, chunks)
+    sample = vectordb.similarity_search("Experience", k=5)[0]
+    print(f"✓ Sample: {sample.page_content[:100]}...")
