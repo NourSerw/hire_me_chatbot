@@ -2,21 +2,17 @@
 name = "hire-me-chatbot"
 version = "0.1.0"
 description = "Chatbot with ChromaDB vector store"
-requires-python = ">=3.11"
+requires-python = ">=3.10"
 dependencies = [
     "langchain>=0.3.0",
     "langchain-community>=0.3.0",
-    "langchain-text-splitters>=0.1.0",
-    "chromadb>=1.4.0",
+    "langchain-huggingface>=0.1.0",
+    "langchain-ollama>=0.2.0",
+    "langchain-chroma>=0.2.0",
+    "chromadb>=0.5.0",
     "sentence-transformers>=3.0.0",
     "pypdf>=4.0.0",
-    "langchain-core>=1.2.9",
-    "langchain-ollama>=1.0.1",
-    "langchain-chroma>=1.1.0",
-    "langchain-huggingface>=1.2.0",
     "langdetect>=1.0.9",
     "streamlit>=1.54.0",
     "pandas>=2.3.3",
-    "unstructured[md,pdf]>=0.18.31",
-    "libmagic>=1.0",
 ]

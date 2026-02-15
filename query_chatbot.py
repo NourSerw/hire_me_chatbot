@@ -1,6 +1,7 @@
+import os
+
 from langdetect import detect
 from langchain_chroma import Chroma
-from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_ollama import OllamaLLM
 from langchain_classic.chains.retrieval_qa.base import RetrievalQA
 
@@ -8,12 +9,13 @@ from utils import HireMeChatbotUtils
 
 class QueryChatbot:
     def __init__(self):
+        OLLAMA_HOST = os.getenv("OLLAMA_HOST", "http://localhost:11434")
         self.embeddings = HireMeChatbotUtils().load_embeddings()
         self.vectordb = Chroma(
             persist_directory="./vector_db",  
             embedding_function=self.embeddings
         )
-        self.llm = OllamaLLM(model="mistral:7b-instruct")
+        self.llm = OllamaLLM(model="mistral:7b-instruct", base_url=OLLAMA_HOST)
     
     def detect_language(self, query):
         language = detect(query)

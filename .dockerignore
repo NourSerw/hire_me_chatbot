@@ -1,0 +1,33 @@
+# .dockerignore
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.so
+.git/
+.gitignore
+.venv/
+venv/
+ENV/
+env/
+.pytest_cache/
+.mypy_cache/
+*.log
+
+# Don't copy the vector DB (it will be created fresh or mounted)
+vector_db/
+.vector_db/
+
+# uv cache
+.uv/
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+.DS_Store
+
+# Docs
+README.md
+*.md
