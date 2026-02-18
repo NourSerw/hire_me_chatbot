@@ -31,3 +31,5 @@ vector_db/
 # Docs
 README.md
 *.md
+
+*.tar

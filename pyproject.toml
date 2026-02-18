@@ -15,4 +15,5 @@ dependencies = [
     "langdetect>=1.0.9",
     "streamlit>=1.54.0",
     "pandas>=2.3.3",
+    "unstructured[md]>=0.18.32",
 ]

@@ -1,2 +1,11 @@
-1. Use langchain
-2. Use VectorDBHandler
+1. Maybe create a script to do CICD
+    a. docker compose build
+    b. docker save to tar
+    c. scp to Hetzner ubuntu server
+    d. ssh into server
+    e. docker load new image
+    f. docker build container
+    g. test new container to make sure it works
+    h. then push commit to github
+
+    

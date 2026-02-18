@@ -17,19 +17,12 @@ services:
             - driver: nvidia
               count: all
               capabilities: [gpu]
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:11434/v1/models"]
-      interval: 10s
-      timeout: 5s
-      retries: 10
-      start_period: 30s
 
   app:
     build: .
     container_name: hire_me_chatbot
     depends_on:
-      ollama:
-        condition: service_healthy
+      - ollama
     ports:
       - "8501:8501"
     environment:
@@ -40,3 +33,7 @@ services:
 
 volumes:
   ollama_data:
+
+networks:
+  my_network:
+    driver: bridge

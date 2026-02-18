@@ -9,7 +9,7 @@ from utils import HireMeChatbotUtils
 
 class QueryChatbot:
     def __init__(self):
-        OLLAMA_HOST = os.getenv("OLLAMA_HOST", "http://localhost:11434")
+        OLLAMA_HOST = os.getenv("OLLAMA_HOST", "http://hire_me_ollama:11434")
         self.embeddings = HireMeChatbotUtils().load_embeddings()
         self.vectordb = Chroma(
             persist_directory="./vector_db",  

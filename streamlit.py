@@ -4,12 +4,12 @@ import pandas as pd
 from query_chatbot import QueryChatbot
 
 st.set_page_config(
-    page_title="Hire Me! By Nour Al-Serw",
+    page_title="Know Nour! By Nour Al-Serw",
     layout="wide",  
     initial_sidebar_state="expanded"  
 )
 
-st.title("Hire Me! By Nour Al-Serw")
+st.title("Know Nour! By Nour Al-Serw")
 
 chatbotTab, InfoTab, Contact = st.tabs(["Chat with the Bot", "About This Project", "Contact Me"])
 
@@ -51,7 +51,7 @@ with Contact:
     
     contact_table = pd.DataFrame({
         "Platform": ["LinkedIn", "GitHub", "Email"],
-        "Contact": ["[Nour Al-Serw](https://www.linkedin.com/in/nour-al-serw/)", "[nouralserw](https://github.com/NourSerw)", "nour.alserw@gmail.com"]
+        "Contact": ["[Nour Al-Serw](https://www.linkedin.com/in/nour-al-serw/)", "[nouralserw](https://github.com/NourSerw)", "nouralserw@gmail.com"]
     })
     df_display = contact_table.reset_index(drop=True)
     df_display.index = [''] * len(df_display)
