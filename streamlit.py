@@ -1,29 +1,44 @@
 import streamlit as st
 import pandas as pd
+from datetime import datetime
+import csv
 
 from query_chatbot import QueryChatbot
+from config.logger import setup_logger
 
 st.set_page_config(
     page_title="Know Nour! By Nour Al-Serw",
     layout="wide",  
-    initial_sidebar_state="expanded"  
+    initial_sidebar_state="expanded",
+    page_icon="🤖"
 )
+chatbot = QueryChatbot()
+logger = setup_logger(__name__)
 
 st.title("Know Nour! By Nour Al-Serw")
 
 chatbotTab, InfoTab, Contact = st.tabs(["Chat with the Bot", "About This Project", "Contact Me"])
 
 with chatbotTab:
+    
     user_input = st.text_input("Ask me anything about my experience, skills, or background!")
     
     submit_button = st.button("Submit")
 
     if submit_button and user_input:
+        user_input_timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         with st.spinner("Generating response..."):
-            chatbot = QueryChatbot()
             response = chatbot.get_response(user_input)
+            response_timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            response_time = (datetime.now() - datetime.strptime(user_input_timestamp, "%Y-%m-%d %H:%M:%S")).total_seconds()
         st.markdown(f"**Response:** {response['result']}")
-
+        with open("logs/questions_answers.csv", mode="a", newline="", encoding="utf-8") as log_file:
+            writer = csv.writer(log_file)
+            if log_file.tell() == 0:  # If file is empty, write header
+                writer.writerow(["Question", "Answer", "Question timestamp", "Answer timestamp", "Response time"])
+            writer.writerow([user_input, response['result'], user_input_timestamp, response_timestamp, response_time])
+        logger.info("Logged question and answer to CSV")
+        
 with InfoTab:
     st.header("About This Project")
     st.markdown("""

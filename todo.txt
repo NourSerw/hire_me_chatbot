@@ -8,4 +8,11 @@
     g. test new container to make sure it works
     h. then push commit to github
 
-    
+ 2. Make the front end (streamlit) look more decent or something
+ 3. Do release policy
+ 4. Logging such as:
+    a. Question
+    b. Answer
+    c. Question timestamp
+    d. Answer timestamp
+    e. Response time (c minus d)   

@@ -6,11 +6,13 @@ from langchain_ollama import OllamaLLM
 from langchain_classic.chains.retrieval_qa.base import RetrievalQA
 
 from utils import HireMeChatbotUtils
+from config.logger import setup_logger
 
 class QueryChatbot:
     def __init__(self):
-        OLLAMA_HOST = os.getenv("OLLAMA_HOST", "http://hire_me_ollama:11434")
+        OLLAMA_HOST = os.getenv("OLLAMA_HOST", "http://localhost:11434")
         self.embeddings = HireMeChatbotUtils().load_embeddings()
+        self.logger = setup_logger(__name__)
         self.vectordb = Chroma(
             persist_directory="./vector_db",  
             embedding_function=self.embeddings
@@ -31,7 +33,7 @@ class QueryChatbot:
     
     def get_response(self, query):
         language = self.detect_language(query)
-        print(f"✓ Detected language: {language}")
+        self.logger.info(f"Detected language: {language}")
         qa_chain = self.qa_chain()
         response = qa_chain.invoke(query)
         return response

@@ -1,8 +1,10 @@
 from langchain_huggingface import HuggingFaceEmbeddings
 
+from config.logger import setup_logger
+
 class HireMeChatbotUtils:
     def __init__(self):
-        pass
+        self.logger = setup_logger(__name__)
 
     def load_embeddings(self):
         """
@@ -11,7 +13,7 @@ class HireMeChatbotUtils:
         Returns:
             HuggingFaceEmbeddings: The loaded embedding model
         """
-        print("Loading embedding model...")
+        self.logger.info("Loading embedding model.")
         embeddings = HuggingFaceEmbeddings(
             model_name="sentence-transformers/all-MiniLM-L6-v2",
             model_kwargs={'device': 'cpu'}
