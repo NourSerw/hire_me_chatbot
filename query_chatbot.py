@@ -10,7 +10,8 @@ from config.logger import setup_logger
 
 class QueryChatbot:
     def __init__(self):
-        OLLAMA_HOST = os.getenv("OLLAMA_HOST", "http://localhost:11434")
+        OLLAMA_HOST = os.getenv("OLLAMA_HOST", "http://hire_me_ollama:11434")
+        #OLLAMA_HOST = os.getenv("OLLAMA_HOST", "http://localhost:11434")
         self.embeddings = HireMeChatbotUtils().load_embeddings()
         self.logger = setup_logger(__name__)
         self.vectordb = Chroma(

@@ -1,7 +1,8 @@
-import streamlit as st
 import pandas as pd
 from datetime import datetime
 import csv
+
+import streamlit as st
 
 from query_chatbot import QueryChatbot
 from config.logger import setup_logger
@@ -16,6 +17,42 @@ chatbot = QueryChatbot()
 logger = setup_logger(__name__)
 
 st.title("Know Nour! By Nour Al-Serw")
+
+if "cookie_accepted" not in st.session_state:
+    st.session_state.cookie_accepted = False
+if not st.session_state.cookie_accepted:
+    st.markdown("""
+        <div style="position: fixed; bottom: 0; left: 0; right: 0; background-color: #f0f2f6; 
+        padding: 15px; z-index: 9999; border-top: 1px solid #ccc; text-align: center;">
+            🍪 This app logs your questions and answers to improve the experience. Do you accept?
+                Note that if you decline, you will be redirected to a 404 page.
+        </div>
+        <style>
+        div[data-testid="stHorizontalBlock"] {
+            position: fixed;
+            bottom: 60px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 10000;
+            width: auto;
+        }
+        div[data-testid="stHorizontalBlock"] button {
+            width: 100px !important;
+        }
+        </style>
+    """, unsafe_allow_html=True)
+
+    col1, col2 = st.columns(2)
+    with col1:
+        if st.button("Accept"):
+            st.session_state.cookie_accepted = True
+            st.rerun()
+    with col2:
+        if st.button("Decline"):
+            st.markdown('<meta http-equiv="refresh" content="0; url=https://httpstat.us/404">', unsafe_allow_html=True)
+            st.stop()
+    st.stop()
+
 
 chatbotTab, InfoTab, Contact = st.tabs(["Chat with the Bot", "About This Project", "Contact Me"])
 

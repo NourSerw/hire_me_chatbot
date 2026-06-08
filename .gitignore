@@ -71,3 +71,6 @@ htmlcov/
 dmypy.json
 
 *.tar
+*.csv
+*.bat
+hire_me_chatbot/

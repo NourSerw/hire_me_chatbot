@@ -16,6 +16,6 @@ class HireMeChatbotUtils:
         self.logger.info("Loading embedding model.")
         embeddings = HuggingFaceEmbeddings(
             model_name="sentence-transformers/all-MiniLM-L6-v2",
-            model_kwargs={'device': 'cpu'}
+            model_kwargs={'device': 'cpu', 'low_cpu_mem_usage': False}
         )
         return embeddings
